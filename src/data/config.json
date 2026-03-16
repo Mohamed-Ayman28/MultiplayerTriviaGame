@@ -1,0 +1,10 @@
+{
+  "minPlayers": 2,
+  "maxPlayers": 4,
+  "questionTime": 15,
+  "warningTimes": [10, 5],
+  "defaultQuestionCount": 10,
+  "maxTeams": 2,
+  "lookupHost": "localhost",
+  "lookupPort": 6000
+}

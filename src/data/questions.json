@@ -1,0 +1,194 @@
+[
+  {
+    "questionId": 1,
+    "text": "What is the capital of France?",
+    "category": "Geography",
+    "difficultyLevel": "easy",
+    "choices": ["A. Paris", "B. London", "C. Berlin", "D. Rome"],
+    "correctAnswer": "A"
+  },
+  {
+    "questionId": 2,
+    "text": "What is 2^10?",
+    "category": "Math",
+    "difficultyLevel": "medium",
+    "choices": ["A. 512", "B. 1024", "C. 2048", "D. 256"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 3,
+    "text": "What planet is closest to the sun?",
+    "category": "Science",
+    "difficultyLevel": "easy",
+    "choices": ["A. Venus", "B. Earth", "C. Mercury", "D. Mars"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 4,
+    "text": "What is the derivative of x^2?",
+    "category": "Math",
+    "difficultyLevel": "hard",
+    "choices": ["A. x", "B. 2x", "C. x^2", "D. 2"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 5,
+    "text": "What is the largest ocean?",
+    "category": "Geography",
+    "difficultyLevel": "easy",
+    "choices": ["A. Atlantic", "B. Indian", "C. Arctic", "D. Pacific"],
+    "correctAnswer": "D"
+  },
+  {
+    "questionId": 6,
+    "text": "Which language runs in a web browser?",
+    "category": "Technology",
+    "difficultyLevel": "easy",
+    "choices": ["A. Java", "B. C", "C. Python", "D. JavaScript"],
+    "correctAnswer": "D"
+  },
+  {
+    "questionId": 7,
+    "text": "What does HTTP stand for?",
+    "category": "Technology",
+    "difficultyLevel": "easy",
+    "choices": ["A. HyperText Transfer Protocol", "B. High Transfer Text Protocol", "C. HyperText Transmission Protocol", "D. None"],
+    "correctAnswer": "A"
+  },
+  {
+    "questionId": 8,
+    "text": "What is the chemical symbol for water?",
+    "category": "Science",
+    "difficultyLevel": "easy",
+    "choices": ["A. O2", "B. H2O", "C. CO2", "D. HO"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 9,
+    "text": "How many bits are in a byte?",
+    "category": "Technology",
+    "difficultyLevel": "easy",
+    "choices": ["A. 4", "B. 16", "C. 8", "D. 32"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 10,
+    "text": "What is the speed of light (approx)?",
+    "category": "Science",
+    "difficultyLevel": "medium",
+    "choices": ["A. 300,000 km/s", "B. 150,000 km/s", "C. 500,000 km/s", "D. 1,000,000 km/s"],
+    "correctAnswer": "A"
+  },
+  {
+    "questionId": 11,
+    "text": "Which data structure uses LIFO order?",
+    "category": "Technology",
+    "difficultyLevel": "medium",
+    "choices": ["A. Queue", "B. Stack", "C. Tree", "D. Graph"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 12,
+    "text": "What is the largest continent?",
+    "category": "Geography",
+    "difficultyLevel": "easy",
+    "choices": ["A. Africa", "B. North America", "C. Asia", "D. Europe"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 13,
+    "text": "Who developed the theory of relativity?",
+    "category": "Science",
+    "difficultyLevel": "medium",
+    "choices": ["A. Isaac Newton", "B. Albert Einstein", "C. Galileo Galilei", "D. Nikola Tesla"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 14,
+    "text": "What is the square root of 144?",
+    "category": "Math",
+    "difficultyLevel": "easy",
+    "choices": ["A. 10", "B. 11", "C. 12", "D. 14"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 15,
+    "text": "Which HTML tag is used to create a hyperlink?",
+    "category": "Technology",
+    "difficultyLevel": "easy",
+    "choices": ["A. <link>", "B. <a>", "C. <href>", "D. <url>"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 16,
+    "text": "Which country has the largest population in the world?",
+    "category": "Geography",
+    "difficultyLevel": "medium",
+    "choices": ["A. India", "B. China", "C. USA", "D. Russia"],
+    "correctAnswer": "A"
+  },
+  {
+    "questionId": 17,
+    "text": "What gas do plants absorb from the atmosphere?",
+    "category": "Science",
+    "difficultyLevel": "easy",
+    "choices": ["A. Oxygen", "B. Nitrogen", "C. Carbon Dioxide", "D. Hydrogen"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 18,
+    "text": "Which operator is used for modulus in C++?",
+    "category": "Technology",
+    "difficultyLevel": "easy",
+    "choices": ["A. /", "B. %", "C. *", "D. #"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 19,
+    "text": "What is 7 factorial (7!)?",
+    "category": "Math",
+    "difficultyLevel": "medium",
+    "choices": ["A. 720", "B. 5040", "C. 120", "D. 840"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 20,
+    "text": "Which planet is known as the Red Planet?",
+    "category": "Science",
+    "difficultyLevel": "easy",
+    "choices": ["A. Mars", "B. Jupiter", "C. Saturn", "D. Venus"],
+    "correctAnswer": "A"
+  },
+  {
+    "questionId": 21,
+    "text": "Which sorting algorithm has the average time complexity O(n log n)?",
+    "category": "Technology",
+    "difficultyLevel": "hard",
+    "choices": ["A. Bubble Sort", "B. Selection Sort", "C. Merge Sort", "D. Insertion Sort"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 22,
+    "text": "What is the value of π (pi) approximately?",
+    "category": "Math",
+    "difficultyLevel": "easy",
+    "choices": ["A. 2.14", "B. 3.14", "C. 4.13", "D. 3.41"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 23,
+    "text": "Which continent is the Sahara Desert located in?",
+    "category": "Geography",
+    "difficultyLevel": "easy",
+    "choices": ["A. Asia", "B. South America", "C. Africa", "D. Australia"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 24,
+    "text": "What does CPU stand for?",
+    "category": "Technology",
+    "difficultyLevel": "easy",
+    "choices": ["A. Central Process Unit", "B. Computer Personal Unit", "C. Central Processing Unit", "D. Control Processing Unit"],
+    "correctAnswer": "C"
+  }
+]

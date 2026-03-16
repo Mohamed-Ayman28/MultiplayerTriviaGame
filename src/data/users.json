@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Admin",
+    "username": "admin",
+    "password": "admin123",
+    "isAdmin": true
+  },
+  {
+    "name": "Mohamed Ayman",
+    "username": "mohamed",
+    "password": "mohamed123",
+    "isAdmin": false
+  },
+  {
+    "name": "Mark Mounir",
+    "username": "mark",
+    "password": "mark123",
+    "isAdmin": false
+  },
+  {
+    "name": "Ahmed Emad",
+    "username": "ahmed",
+    "password": "ahmed123",
+    "isAdmin": false
+  },
+  {
+    "name": "Youssef",
+    "username": "youssef",
+    "password": "youssef123",
+    "isAdmin": false
+  }
+]
