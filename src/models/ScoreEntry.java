@@ -4,10 +4,10 @@ import java.util.Date;
 
 public class ScoreEntry {
 
-    User user;
-    int score;
-    Date date;
-    String gametype;
+    private User user;
+    private int score;
+    private Date date;
+    private String gametype;
     private int totalQuestions;   
     private int correctAnswers;   
 

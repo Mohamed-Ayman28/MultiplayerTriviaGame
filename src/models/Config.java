@@ -8,21 +8,10 @@ public class Config {
     private int questionTime;               
     private List<Integer> warningTimes;    
     private int defaultQuestionCount;
-    private int maxTeams;
     private String lookupHost;
     private int lookupPort;
 
     public Config() {
-    }
-    
-    public Config(int minPlayers, int maxPlayers, int questionTime,
-                  List<Integer> warningTimes, int defaultQuestionCount, int maxTeams) {
-        this.minPlayers = minPlayers;
-        this.maxPlayers = maxPlayers;
-        this.questionTime = questionTime;
-        this.warningTimes = warningTimes;
-        this.defaultQuestionCount = defaultQuestionCount;
-        this.maxTeams = maxTeams;
     }
 
     public int getMinPlayers() {
@@ -63,14 +52,6 @@ public class Config {
 
     public void setDefaultQuestionCount(int defaultQuestionCount) {
         this.defaultQuestionCount = defaultQuestionCount;
-    }
-
-    public int getMaxTeams() {
-        return maxTeams;
-    }
-
-    public void setMaxTeams(int maxTeams) {
-        this.maxTeams = maxTeams;
     }
 
     public String getLookupHost() {

@@ -153,24 +153,12 @@ public class GameServer {
 
     public void removeClient(String username) {
         connectedClients.remove(username);
-        for (Map.Entry<String, List<String>> entry : gameRooms.entrySet()) {
-            String roomName = entry.getKey();
-            List<String> players = entry.getValue();
-            if (players.remove(username)) {
-                if (players.isEmpty()) {
-                    gameRooms.remove(roomName);
-                    roomHosts.remove(roomName);
-                    roomInProgress.remove(roomName);
-                    roomSetups.remove(roomName);
-                    roomAcceptingAnswers.remove(roomName);
-                    roomAnswers.remove(roomName);
-                    roomScores.remove(roomName);
-                    roomAnswerDetails.remove(roomName);
-                } else if (username.equals(roomHosts.get(roomName))) {
-                    roomHosts.put(roomName, players.get(0));
-                    broadcastToRoom(roomName, "Host left. New host: " + players.get(0));
-                }
-            }
+        List<String> rooms = gameRooms.entrySet().stream()
+                .filter(e -> e.getValue().contains(username))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+        for (String roomName : rooms) {
+            leaveRoom(roomName, username);
         }
         System.out.println("[-] " + username + " offline. Total: " + connectedClients.size());
     }
@@ -283,11 +271,6 @@ public class GameServer {
             }
         }
     }
-
-    public void broadcastToAll(String message) {
-        for (ClientHandler h : connectedClients.values()) h.sendMessage(message);
-    }
-
 
     public boolean configureRoomGame(String roomName, String category, String difficulty, int questionCount,
                                      String teamAName, String teamBName, Map<String, String> teamByUser) {
@@ -561,7 +544,7 @@ public class GameServer {
         return false;
     }
 
-    private String normalizeAnswerToken(String answer) {
+    String normalizeAnswerToken(String answer) {
         if (answer == null) return "";
         String normalized = answer.trim().toUpperCase(Locale.ROOT);
         if (normalized.isEmpty()) return "";
@@ -603,12 +586,6 @@ public class GameServer {
 
     
     public List<Question> getQuestions()                { return questions; }
-    public List<Question> getRandomQuestions(int count) {
-        List<Question> shuffled = new ArrayList<>(questions);
-        Collections.shuffle(shuffled);
-        return shuffled.subList(0, Math.min(count, shuffled.size()));
-    }
-
     public List<Question> getQuestionsByCriteria(String category, String difficulty) {
         String c = category == null ? "any" : category.trim().toLowerCase();
         String d = difficulty == null ? "any" : difficulty.trim().toLowerCase();
@@ -632,9 +609,4 @@ public class GameServer {
         jsonLoader.saveScores(scores);
     }
 
-    public void saveQuestions() { jsonLoader.saveQuestions(questions); }
-
-    public static void main(String[] args) {
-        new GameServer().startServer();
-    }
 }

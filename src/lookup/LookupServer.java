@@ -23,8 +23,8 @@ public class LookupServer {
 
     private final int port;
     private final Gson gson;
-    private final JsonLoader jsonLoader;
     private final ExecutorService pool;
+    private final List<Question> questions;
 
     public LookupServer(int port) {
         if (port < 1 || port > 65535) {
@@ -32,8 +32,8 @@ public class LookupServer {
         }
         this.port = port;
         this.gson = new Gson();
-        this.jsonLoader = new JsonLoader();
         this.pool = Executors.newFixedThreadPool(16);
+        this.questions = new JsonLoader().loadQuestions();
     }
 
     public void start() {
@@ -81,8 +81,7 @@ public class LookupServer {
                 return;
             }
 
-            List<Question> questions = jsonLoader.loadQuestions();
-            List<Question> filtered = filterQuestions(questions, category, difficulty);
+            List<Question> filtered = filterQuestions(this.questions, category, difficulty);
             Collections.shuffle(filtered);
             int limit = Math.min(Math.max(1, count), filtered.size());
             List<Question> result = filtered.subList(0, limit);
