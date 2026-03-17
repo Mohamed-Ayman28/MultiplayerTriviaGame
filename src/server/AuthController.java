@@ -35,8 +35,10 @@ class AuthController {
 
             if (!server.getUsers().containsKey(uname)) {
                 sendMessage.accept("ERROR 404: Username not found.");
+                promptForAuth();
             } else if (!server.authenticateUser(uname, pass)) {
                 sendMessage.accept("ERROR 401: Wrong password.");
+                promptForAuth();
             } else {
                 setUsername.accept(uname);
                 server.addClient(uname, handler);
@@ -54,13 +56,23 @@ class AuthController {
 
             if (server.getUsers().containsKey(uname)) {
                 sendMessage.accept("ERROR 409: Username already taken please choose another username.");
+                promptForAuth();
             } else {
                 server.registerUser(name, uname, pass);
                 sendMessage.accept("Registered successfully! Please login.");
+                promptForAuth();
             }
         } else {
-            sendMessage.accept("Invalid option. Type [login] or [register]:");
+            promptForAuthWithPrefix("Invalid option.");
         }
+    }
+
+    private void promptForAuth() {
+        sendMessage.accept("Type [login] or [register]:");
+    }
+
+    private void promptForAuthWithPrefix(String prefix) {
+        sendMessage.accept(prefix + " Type [login] or [register]:");
     }
 
     boolean isAdmin(String username) {

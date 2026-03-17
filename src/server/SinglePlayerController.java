@@ -81,8 +81,7 @@ class SinglePlayerController {
         List<Integer> warnings = server.getConfig() != null
                 ? server.getConfig().getWarningTimes() : Arrays.asList(10, 5);
 
-        List<Question> filtered = server.getQuestionsByCriteria(category, difficulty);
-        List<Question> gameQuestions = server.getRandomQuestionsFrom(filtered, qCount);
+        List<Question> gameQuestions = server.fetchQuestionsForGame(category, difficulty, qCount);
         if (gameQuestions.isEmpty()) {
             sendMessage.accept("No questions available.");
             showMenu.run();

@@ -31,29 +31,18 @@ public class GameServer {
     private LookupClient lookupClient;
 
     private Map<String, User> users;
-    private List<Question> questions;
     private List<ScoreEntry> scores;
     private Config config;
 
-   
     private Map<String, ClientHandler> connectedClients;
-
     private Map<String, List<String>>  gameRooms;
-
     private Map<String, String> roomHosts;
-
     private Map<String, Boolean> roomInProgress;
-
     private Map<String, Map<String, Integer>> roomScores;
-
     private Map<String, Map<String, String>>  roomAnswers;
-
     private Map<String, Boolean> roomAcceptingAnswers;
-
     private Map<String, RoomSetup> roomSetups;
-
     private Map<String, Map<String, List<String>>> roomAnswerDetails;
-
     private AtomicInteger publicRoomCounter;
 
     private static class RoomSetup {
@@ -100,15 +89,12 @@ public class GameServer {
     private void loadData() {
         System.out.println("Loading server data...");
         users = jsonLoader.loadUsers();
-        questions = jsonLoader.loadQuestions();
         scores = jsonLoader.loadScores();
         config = jsonLoader.loadConfig();
 
         if (scores == null) scores = new ArrayList<>();
-        if (questions == null) questions = new ArrayList<>();
 
         System.out.println("Users loaded: "   + users.size());
-        System.out.println("Questions loaded: " + questions.size());
         System.out.println("Scores loaded: "    + scores.size());
         if (config != null) {
             System.out.println("Config: maxPlayers=" + config.getMaxPlayers()
@@ -280,9 +266,7 @@ public class GameServer {
 
         String selectedCategory = (category == null || category.trim().isEmpty()) ? "any" : category.trim();
         String selectedDifficulty = (difficulty == null || difficulty.trim().isEmpty()) ? "any" : difficulty.trim().toLowerCase();
-
-        int maxCount = questions.size();
-        int safeCount = Math.max(1, Math.min(questionCount, maxCount == 0 ? 1 : maxCount));
+        int safeCount = Math.max(1, questionCount);
 
         if (teamByUser != null && !teamByUser.isEmpty()) {
             if (teamAName == null || teamBName == null) return false;
@@ -314,10 +298,10 @@ public class GameServer {
     }
 
     public Set<String> getAvailableCategories() {
-        return questions.stream()
-                .map(Question::getCategory)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toCollection(TreeSet::new));
+        Set<String> categories = new TreeSet<>();
+        categories.add("any");
+        categories.addAll(lookupClient.fetchAvailableCategories());
+        return categories;
     }
 
     public void startMultiplayerGame(String roomName) {
@@ -554,15 +538,8 @@ public class GameServer {
         return normalized;
     }
 
-    private List<Question> fetchQuestionsForGame(String category, String difficulty, int count) {
-        List<Question> fromLookup = lookupClient.fetchQuestions(category, difficulty, count);
-        if (!fromLookup.isEmpty()) {
-            return fromLookup;
-        }
-
-        List<Question> candidates = getQuestionsByCriteria(category, difficulty);
-        if (candidates.isEmpty()) return new ArrayList<>();
-        return getRandomQuestionsFrom(candidates, count);
+    public List<Question> fetchQuestionsForGame(String category, String difficulty, int count) {
+        return lookupClient.fetchQuestions(category, difficulty, count);
     }
 
    
@@ -585,22 +562,6 @@ public class GameServer {
     }
 
     
-    public List<Question> getQuestions()                { return questions; }
-    public List<Question> getQuestionsByCriteria(String category, String difficulty) {
-        String c = category == null ? "any" : category.trim().toLowerCase();
-        String d = difficulty == null ? "any" : difficulty.trim().toLowerCase();
-        return questions.stream()
-                .filter(q -> c.equals("any") || (q.getCategory() != null && q.getCategory().trim().toLowerCase().equals(c)))
-                .filter(q -> d.equals("any") || (q.getDifficultyLevel() != null && q.getDifficultyLevel().trim().toLowerCase().equals(d)))
-                .collect(Collectors.toList());
-    }
-
-    public List<Question> getRandomQuestionsFrom(List<Question> source, int count) {
-        List<Question> shuffled = new ArrayList<>(source);
-        Collections.shuffle(shuffled);
-        return shuffled.subList(0, Math.min(count, shuffled.size()));
-    }
-
     public Config          getConfig()  { return config; }
     public List<ScoreEntry> getScores() { return scores; }
 

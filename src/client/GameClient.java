@@ -21,7 +21,7 @@ public class GameClient {
             PrintWriter    serverOut = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader userIn    = new BufferedReader(new InputStreamReader(System.in));
 
-            // Thread: read messages from server and print them
+            // read server responses in a thread 
             Thread readerThread = new Thread(() -> {
                 try {
                     String line;
@@ -35,10 +35,13 @@ public class GameClient {
             readerThread.setDaemon(true);
             readerThread.start();
 
-            // Main thread: read user input and send to server
+            // reads user input in a separate thread
             String input;
             while ((input = userIn.readLine()) != null) {
                 serverOut.println(input);
+                if (input.trim().equals("-")) {
+                    break;
+                }
             }
 
         } catch (IOException e) {

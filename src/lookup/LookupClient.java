@@ -15,6 +15,8 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class LookupClient {
 
@@ -56,6 +58,30 @@ public class LookupClient {
         } catch (IOException | JsonSyntaxException e) {
             System.err.println("LookupClient fetch error: " + e.getMessage());
             return Collections.emptyList();
+        }
+    }
+
+    public Set<String> fetchAvailableCategories() {
+        try (Socket socket = new Socket()) {
+            socket.connect(new InetSocketAddress(host, port), CONNECT_TIMEOUT_MS);
+            socket.setSoTimeout(READ_TIMEOUT_MS);
+
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8)) {
+
+                out.println("CATEGORIES");
+                String response = in.readLine();
+                if (response == null || response.trim().isEmpty()) {
+                    return Collections.emptySet();
+                }
+
+                Type setType = new TypeToken<Set<String>>() {}.getType();
+                Set<String> categories = gson.fromJson(response, setType);
+                return categories != null ? new TreeSet<>(categories) : Collections.emptySet();
+            }
+        } catch (IOException | JsonSyntaxException e) {
+            System.err.println("LookupClient categories error: " + e.getMessage());
+            return Collections.emptySet();
         }
     }
 }

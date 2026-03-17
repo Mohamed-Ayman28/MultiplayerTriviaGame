@@ -9,7 +9,7 @@ Run from project root:
 ```powershell
 javac -cp "lib/gson-2.10.1.jar" -d out src/Main.java src/client/GameClient.java src/server/GameServer.java src/server/ClientHandler.java src/models/Config.java src/models/Question.java src/models/ScoreEntry.java src/models/User.java src/utils/JsonLoader.java src/lookup/LookupClient.java src/lookup/LookupServer.java
 ```
-
+java -cp out:lib/gson-2.10.1.jar Main client localhost 5000
 ## Start Lookup Server
 Open terminal 1:
 ```powershell
