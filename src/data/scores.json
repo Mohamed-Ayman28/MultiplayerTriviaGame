@@ -128,5 +128,57 @@
     "gametype": "multiplayer",
     "totalQuestions": 3,
     "correctAnswers": 0
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 0,
+    "date": "2026-03-17T20:14:35",
+    "gametype": "multiplayer",
+    "totalQuestions": 3,
+    "correctAnswers": 0
+  },
+  {
+    "user": {
+      "name": "Ahmed Emad",
+      "username": "ahmed",
+      "password": "ahmed123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T20:14:35",
+    "gametype": "multiplayer",
+    "totalQuestions": 3,
+    "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T20:21:39",
+    "gametype": "multiplayer",
+    "totalQuestions": 4,
+    "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Ahmed Emad",
+      "username": "ahmed",
+      "password": "ahmed123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T20:21:39",
+    "gametype": "multiplayer",
+    "totalQuestions": 4,
+    "correctAnswers": 1
   }
 ]
