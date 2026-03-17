@@ -190,5 +190,213 @@
     "difficultyLevel": "easy",
     "choices": ["A. Central Process Unit", "B. Computer Personal Unit", "C. Central Processing Unit", "D. Control Processing Unit"],
     "correctAnswer": "C"
+  },
+  {
+    "questionId": 25,
+    "text": "What is the capital of Japan?",
+    "category": "Geography",
+    "difficultyLevel": "easy",
+    "choices": ["A. Seoul", "B. Tokyo", "C. Beijing", "D. Osaka"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 26,
+    "text": "Which number is a prime number?",
+    "category": "Math",
+    "difficultyLevel": "easy",
+    "choices": ["A. 21", "B. 27", "C. 29", "D. 33"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 27,
+    "text": "Which organ pumps blood in the human body?",
+    "category": "Science",
+    "difficultyLevel": "easy",
+    "choices": ["A. Brain", "B. Liver", "C. Lungs", "D. Heart"],
+    "correctAnswer": "D"
+  },
+  {
+    "questionId": 28,
+    "text": "Which protocol secures web traffic with encryption?",
+    "category": "Technology",
+    "difficultyLevel": "medium",
+    "choices": ["A. FTP", "B. HTTP", "C. HTTPS", "D. SMTP"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 29,
+    "text": "What is 15% of 200?",
+    "category": "Math",
+    "difficultyLevel": "easy",
+    "choices": ["A. 20", "B. 25", "C. 30", "D. 35"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 30,
+    "text": "Which desert is the largest hot desert in the world?",
+    "category": "Geography",
+    "difficultyLevel": "medium",
+    "choices": ["A. Gobi", "B. Sahara", "C. Kalahari", "D. Arabian"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 31,
+    "text": "What is the SI unit of force?",
+    "category": "Science",
+    "difficultyLevel": "medium",
+    "choices": ["A. Joule", "B. Watt", "C. Newton", "D. Pascal"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 32,
+    "text": "In Java, which keyword is used to inherit a class?",
+    "category": "Technology",
+    "difficultyLevel": "easy",
+    "choices": ["A. implement", "B. extends", "C. inherits", "D. super"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 33,
+    "text": "What is the value of 9 squared?",
+    "category": "Math",
+    "difficultyLevel": "easy",
+    "choices": ["A. 18", "B. 72", "C. 81", "D. 99"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 34,
+    "text": "Which country is known as the Land of the Rising Sun?",
+    "category": "Geography",
+    "difficultyLevel": "easy",
+    "choices": ["A. Thailand", "B. Japan", "C. Indonesia", "D. Philippines"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 35,
+    "text": "What is the pH value of pure water at room temperature?",
+    "category": "Science",
+    "difficultyLevel": "medium",
+    "choices": ["A. 5", "B. 6", "C. 7", "D. 8"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 36,
+    "text": "Which data structure is typically used for BFS traversal?",
+    "category": "Technology",
+    "difficultyLevel": "medium",
+    "choices": ["A. Stack", "B. Queue", "C. Heap", "D. HashMap"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 37,
+    "text": "Solve: 3x + 5 = 20. What is x?",
+    "category": "Math",
+    "difficultyLevel": "easy",
+    "choices": ["A. 3", "B. 4", "C. 5", "D. 6"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 38,
+    "text": "Which is the longest river in the world (commonly accepted in many quizzes)?",
+    "category": "Geography",
+    "difficultyLevel": "medium",
+    "choices": ["A. Nile", "B. Amazon", "C. Yangtze", "D. Mississippi"],
+    "correctAnswer": "A"
+  },
+  {
+    "questionId": 39,
+    "text": "Which layer of Earth is liquid and composed mostly of iron and nickel?",
+    "category": "Science",
+    "difficultyLevel": "hard",
+    "choices": ["A. Crust", "B. Mantle", "C. Outer Core", "D. Inner Core"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 40,
+    "text": "What does SQL stand for?",
+    "category": "Technology",
+    "difficultyLevel": "easy",
+    "choices": ["A. Structured Query Language", "B. Simple Query Language", "C. Standard Question Language", "D. Sequential Query Logic"],
+    "correctAnswer": "A"
+  },
+  {
+    "questionId": 41,
+    "text": "What is the next number in the sequence: 2, 4, 8, 16, ?",
+    "category": "Math",
+    "difficultyLevel": "easy",
+    "choices": ["A. 18", "B. 24", "C. 32", "D. 34"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 42,
+    "text": "Which continent has the most countries?",
+    "category": "Geography",
+    "difficultyLevel": "medium",
+    "choices": ["A. Africa", "B. Europe", "C. Asia", "D. South America"],
+    "correctAnswer": "A"
+  },
+  {
+    "questionId": 43,
+    "text": "What is the chemical symbol for gold?",
+    "category": "Science",
+    "difficultyLevel": "easy",
+    "choices": ["A. Gd", "B. Go", "C. Au", "D. Ag"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 44,
+    "text": "Which complexity is generally associated with binary search?",
+    "category": "Technology",
+    "difficultyLevel": "medium",
+    "choices": ["A. O(n)", "B. O(log n)", "C. O(n log n)", "D. O(n^2)"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 45,
+    "text": "If a triangle has angles 90, 45, and 45 degrees, what type is it?",
+    "category": "Math",
+    "difficultyLevel": "medium",
+    "choices": ["A. Scalene", "B. Equilateral", "C. Right isosceles", "D. Obtuse"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 46,
+    "text": "What is the smallest country in the world by area?",
+    "category": "Geography",
+    "difficultyLevel": "easy",
+    "choices": ["A. Monaco", "B. Vatican City", "C. San Marino", "D. Malta"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 47,
+    "text": "Which process do plants use to convert light into chemical energy?",
+    "category": "Science",
+    "difficultyLevel": "easy",
+    "choices": ["A. Respiration", "B. Fermentation", "C. Photosynthesis", "D. Transpiration"],
+    "correctAnswer": "C"
+  },
+  {
+    "questionId": 48,
+    "text": "In networking, what does DNS do?",
+    "category": "Technology",
+    "difficultyLevel": "medium",
+    "choices": ["A. Encrypts traffic", "B. Resolves domain names to IP addresses", "C. Routes packets", "D. Stores website files"],
+    "correctAnswer": "B"
+  },
+  {
+    "questionId": 49,
+    "text": "What is the area of a rectangle with length 8 and width 5?",
+    "category": "Math",
+    "difficultyLevel": "easy",
+    "choices": ["A. 13", "B. 26", "C. 35", "D. 40"],
+    "correctAnswer": "D"
+  },
+  {
+    "questionId": 50,
+    "text": "Which planet has the most prominent ring system?",
+    "category": "Science",
+    "difficultyLevel": "easy",
+    "choices": ["A. Mars", "B. Jupiter", "C. Saturn", "D. Neptune"],
+    "correctAnswer": "C"
   }
 ]

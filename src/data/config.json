@@ -1,6 +1,6 @@
 {
   "minPlayers": 2,
-  "maxPlayers": 4,
+  "maxPlayers": 5,
   "questionTime": 15,
   "warningTimes": [10, 5],
   "defaultQuestionCount": 10,

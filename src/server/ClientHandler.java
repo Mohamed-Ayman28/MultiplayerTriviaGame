@@ -107,7 +107,7 @@ public class ClientHandler implements Runnable {
         sendMessage("[1] Single Player");
         sendMessage("[2] Random Trivia");
         sendMessage("[3] Multiplayer");
-        sendMessage("[4] Leaderboard");
+        sendMessage("[4] Score History");
         User u = server.getUsers().get(username);
         if (u != null && u.isAdmin()) sendMessage("[5] Admin Panel");
         sendMessage("[-] Quit");
@@ -119,7 +119,7 @@ public class ClientHandler implements Runnable {
             case "1": handleSinglePlayer();  break;
             case "2": handleRandomTrivia();  break;
             case "3": handleMultiplayer();   break;
-            case "4": leaderboardController.showLeaderboard(); break;
+            case "4": leaderboardController.showScoreHistory(); break;
             case "5":
                 if (authController.isAdmin(username)) adminController.handleAdmin();
                 else sendMessage("Access denied.");
