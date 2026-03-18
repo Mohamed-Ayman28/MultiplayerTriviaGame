@@ -42,7 +42,6 @@ public class ClientHandler implements Runnable {
         );
         this.adminController = new AdminController(
                 server,
-                () -> username,
                 this::sendMessage,
                 this::readLineAllowQuit,
                 this::showMenu

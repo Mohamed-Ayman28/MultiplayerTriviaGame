@@ -2,7 +2,7 @@
   "minPlayers": 2,
   "maxPlayers": 5,
   "questionTime": 15,
-  "warningTimes": [10, 5],
+  "warningTimes": [10, 5, 3],
   "defaultQuestionCount": 10,
   "maxTeams": 2,
   "lookupHost": "localhost",

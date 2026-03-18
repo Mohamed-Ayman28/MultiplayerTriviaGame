@@ -6,30 +6,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import models.ScoreEntry;
 import models.User;
-import server.core.ClientHandler;
 import server.core.GameServer;
 import server.io.ClientIO;
 
 public class AdminController {
 
     private final GameServer server;
-    private final Supplier<String> usernameSupplier;
     private final Consumer<String> sendMessage;
     private final ClientIO.LineReader readLineAllowQuit;
     private final Runnable showMenu;
 
     public AdminController(
             GameServer server,
-            Supplier<String> usernameSupplier,
             Consumer<String> sendMessage,
             ClientIO.LineReader readLineAllowQuit,
             Runnable showMenu
     ) {
         this.server = server;
-        this.usernameSupplier = usernameSupplier;
         this.sendMessage = sendMessage;
         this.readLineAllowQuit = readLineAllowQuit;
         this.showMenu = showMenu;
@@ -38,7 +33,6 @@ public class AdminController {
     public void handleAdmin() throws IOException {
         sendMessage.accept("=== ADMIN PANEL ===");
         sendMessage.accept("[1] View All Scores");
-        sendMessage.accept("[2] Kick Player");
         sendMessage.accept("[0] Back");
         sendMessage.accept("Choose:");
 
@@ -50,9 +44,6 @@ public class AdminController {
         switch (input.trim()) {
             case "1":
                 adminViewScores();
-                break;
-            case "2":
-                adminKickPlayer();
                 break;
             case "0":
                 showMenu.run();
@@ -125,33 +116,5 @@ public class AdminController {
         sendMessage.accept("Player with the most wins: " + top + ("N/A".equals(top) ? "" : " (" + topWins + " wins)"));
 
         showMenu.run();
-    }
-
-    private void adminKickPlayer() throws IOException {
-        String currentUsername = usernameSupplier.get();
-        Map<String, ClientHandler> clients = server.getConnectedClients();
-        sendMessage.accept("--- Online Players ---");
-        for (String u : clients.keySet()) {
-            if (!u.equals(currentUsername)) {
-                sendMessage.accept("  " + u);
-            }
-        }
-        sendMessage.accept("Enter username to kick:");
-        String target = readLineAllowQuit.readLine();
-        if (target == null || target.trim().isEmpty()) {
-            handleAdmin();
-            return;
-        }
-        target = target.trim();
-
-        ClientHandler handler = clients.get(target);
-        if (handler == null) {
-            sendMessage.accept("Player not found.");
-        } else {
-            handler.sendMessage("You have been kicked by admin.");
-            handler.disconnect();
-            sendMessage.accept(target + " has been kicked.");
-        }
-        handleAdmin();
     }
 }

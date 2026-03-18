@@ -193,5 +193,18 @@
     "gametype": "singleplayer",
     "totalQuestions": 10,
     "correctAnswers": 9
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 0,
+    "date": "2026-03-18T16:27:20",
+    "gametype": "singleplayer",
+    "totalQuestions": 10,
+    "correctAnswers": 0
   }
 ]

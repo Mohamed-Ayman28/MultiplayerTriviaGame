@@ -108,7 +108,6 @@ public class JsonLoader {
         }
     }
 
-
     public void saveScores(List<ScoreEntry> scores) {  
         try (Writer w = Files.newBufferedWriter(resolveWritePath(SCORES_FILE))) {
             gson.toJson(scores, w);
@@ -116,16 +115,6 @@ public class JsonLoader {
             System.err.println("Failed to save scores: " + e.getMessage());
         }
     }
-
-   // bring it in the memory
-    public void saveQuestions(List<Question> questions) {
-        try (Writer w = Files.newBufferedWriter(resolveWritePath(QUESTIONS_FILE))) {
-            gson.toJson(questions, w);
-        } catch (IOException e) {
-            System.err.println("Failed to save questions: " + e.getMessage());
-        }
-    }
-
 
     public void saveUsers(Map<String, User> users) {
         try (Writer w = Files.newBufferedWriter(resolveWritePath(USERS_FILE))) {

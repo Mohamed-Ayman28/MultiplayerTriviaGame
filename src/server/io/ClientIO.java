@@ -69,6 +69,7 @@ public class ClientIO {
 
         for (int w : warnings) {
             long warnAt = timeoutMs - (w * 1000L);
+            //calculates the time in ms , warns user at specified times in the config.json file
             while (!done[0] && (System.currentTimeMillis() - start) < warnAt) {
                 try {
                     Thread.sleep(100);

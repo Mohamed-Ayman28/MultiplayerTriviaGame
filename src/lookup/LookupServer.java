@@ -34,6 +34,7 @@ public class LookupServer {
         }
         this.port = port;
         this.gson = new Gson();
+        //creates stateless thread pool
         this.pool = Executors.newFixedThreadPool(16);
         this.questions = new JsonLoader().loadQuestions();
     }

@@ -191,7 +191,7 @@ try:
     send(c2, "C")
     send(c3, "D", 1.5)
 
-    # Iteration 5: admin + kick
+    # Iteration 5: admin
     for m in ["login", "mark", "mark123"]:
         send(c4, m)
 
@@ -205,9 +205,6 @@ try:
 
     send(c1_admin, "5", 0.5)
     send(c1_admin, "1", 0.9)
-    send(c1_admin, "5", 0.5)
-    send(c1_admin, "2", 0.5)
-    send(c1_admin, "mark", 0.8)
 
     for p in [c1_admin, c2, c3, c4]:
         send(p, "-", 0.1)
@@ -231,8 +228,6 @@ try:
         ("c3", "Joined public room 'public-room-", "public room joined c3"),
         ("c1_admin", "=== ADMIN PANEL ===", "admin panel access"),
         ("c1_admin", "--- All Scores ---", "admin view scores"),
-        ("c1_admin", "has been kicked.", "admin kick success"),
-        ("c4", "You have been kicked by admin.", "kicked client notified"),
     ]
 
     # Optional switch to show how failures are reported.
