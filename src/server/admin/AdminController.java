@@ -1,4 +1,4 @@
-package server;
+package server.admin;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,8 +9,11 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import models.ScoreEntry;
 import models.User;
+import server.core.ClientHandler;
+import server.core.GameServer;
+import server.io.ClientIO;
 
-class AdminController {
+public class AdminController {
 
     private final GameServer server;
     private final Supplier<String> usernameSupplier;
@@ -18,7 +21,7 @@ class AdminController {
     private final ClientIO.LineReader readLineAllowQuit;
     private final Runnable showMenu;
 
-    AdminController(
+    public AdminController(
             GameServer server,
             Supplier<String> usernameSupplier,
             Consumer<String> sendMessage,
@@ -32,7 +35,7 @@ class AdminController {
         this.showMenu = showMenu;
     }
 
-    void handleAdmin() throws IOException {
+    public void handleAdmin() throws IOException {
         sendMessage.accept("=== ADMIN PANEL ===");
         sendMessage.accept("[1] View All Scores");
         sendMessage.accept("[2] Kick Player");

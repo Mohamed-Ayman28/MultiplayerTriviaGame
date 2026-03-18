@@ -1,4 +1,4 @@
-package server;
+package server.gameplay;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import server.core.GameServer;
+import server.io.ClientIO;
 
 class RoomSetupController {
 

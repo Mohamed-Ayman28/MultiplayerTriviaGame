@@ -1,15 +1,17 @@
-package server;
+package server.gameplay;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import server.core.GameServer;
+import server.io.ClientIO;
 
-class MultiplayerController {
+public class MultiplayerController {
 
     @FunctionalInterface
-    interface TimeoutLineReader {
+    public interface TimeoutLineReader {
         String read(int timeoutMs) throws IOException;
     }
 
@@ -23,7 +25,7 @@ class MultiplayerController {
     private final Runnable showMenu;
     private final RoomSetupController roomSetupController;
 
-    MultiplayerController(
+    public MultiplayerController(
             GameServer server,
             Supplier<String> usernameSupplier,
             Supplier<String> currentRoomSupplier,
@@ -51,7 +53,7 @@ class MultiplayerController {
         );
     }
 
-    void handleMultiplayer() throws IOException {
+    public void handleMultiplayer() throws IOException {
         showMultiplayerMenu();
         String input = readLineAllowQuit.readLine();
         if (input == null) {

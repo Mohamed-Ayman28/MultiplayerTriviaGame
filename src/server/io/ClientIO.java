@@ -1,4 +1,4 @@
-package server;
+package server.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,15 +7,15 @@ import java.net.SocketTimeoutException;
 import java.util.List;
 import java.util.function.Consumer;
 
-class ClientIO {
+public class ClientIO {
 
     @FunctionalInterface
-    interface LineReader {
+    public interface LineReader {
         String readLine() throws IOException;
     }
 
     @FunctionalInterface
-    interface QuitChecker {
+    public interface QuitChecker {
         void check(String value) throws IOException;
     }
 
@@ -24,20 +24,20 @@ class ClientIO {
     private final Consumer<String> sendMessage;
     private final QuitChecker quitChecker;
 
-    ClientIO(Socket socket, BufferedReader in, Consumer<String> sendMessage, QuitChecker quitChecker) {
+    public ClientIO(Socket socket, BufferedReader in, Consumer<String> sendMessage, QuitChecker quitChecker) {
         this.socket = socket;
         this.in = in;
         this.sendMessage = sendMessage;
         this.quitChecker = quitChecker;
     }
 
-    String readLineAllowQuit() throws IOException {
+    public String readLineAllowQuit() throws IOException {
         String value = in.readLine();
         quitChecker.check(value);
         return value;
     }
 
-    String tryReadLineWithTimeout(int timeoutMs) throws IOException {
+    public String tryReadLineWithTimeout(int timeoutMs) throws IOException {
         int previousTimeout = socket.getSoTimeout();
         try {
             socket.setSoTimeout(timeoutMs);
@@ -51,7 +51,7 @@ class ClientIO {
         }
     }
 
-    String timedRead(long timeoutMs, List<Integer> warnings, int totalSecs) {
+    public String timedRead(long timeoutMs, List<Integer> warnings, int totalSecs) {
         final String[] result = {null};
         final boolean[] done = {false};
 

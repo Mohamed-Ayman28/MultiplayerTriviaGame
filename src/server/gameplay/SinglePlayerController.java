@@ -1,4 +1,4 @@
-package server;
+package server.gameplay;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -9,21 +9,22 @@ import java.util.function.Supplier;
 import models.Question;
 import models.ScoreEntry;
 import models.User;
+import server.core.GameServer;
 
-class SinglePlayerController {
+public class SinglePlayerController {
 
     @FunctionalInterface
-    interface LineReader {
+    public interface LineReader {
         String readLine() throws IOException;
     }
 
     @FunctionalInterface
-    interface TimedReader {
+    public interface TimedReader {
         String read(long timeoutMs, List<Integer> warnings, int totalSecs);
     }
 
     @FunctionalInterface
-    interface QuitAction {
+    public interface QuitAction {
         void onQuit() throws IOException;
     }
 
@@ -35,7 +36,7 @@ class SinglePlayerController {
     private final QuitAction quitAction;
     private final Runnable showMenu;
 
-    SinglePlayerController(
+    public SinglePlayerController(
             GameServer server,
             Supplier<String> usernameSupplier,
             Consumer<String> sendMessage,
@@ -53,7 +54,7 @@ class SinglePlayerController {
         this.showMenu = showMenu;
     }
 
-    void handleSinglePlayer() throws IOException {
+    public void handleSinglePlayer() throws IOException {
         sendMessage.accept("Enter category (or 'any'). Available: " + String.join(", ", server.getAvailableCategories()));
         String category = readLineAllowQuit.readLine();
         if (category == null || category.trim().equals("-")) {
@@ -71,7 +72,7 @@ class SinglePlayerController {
         playSinglePlayer(category.trim(), difficulty.trim(), "singleplayer", "=== SINGLE PLAYER ===");
     }
 
-    void handleRandomTrivia() throws IOException {
+    public void handleRandomTrivia() throws IOException {
         playSinglePlayer("any", "any", "random-trivia", "=== RANDOM TRIVIA ===");
     }
 

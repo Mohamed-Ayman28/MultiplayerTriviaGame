@@ -180,5 +180,18 @@
     "gametype": "multiplayer",
     "totalQuestions": 4,
     "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 90,
+    "date": "2026-03-18T14:32:35",
+    "gametype": "singleplayer",
+    "totalQuestions": 10,
+    "correctAnswers": 9
   }
 ]

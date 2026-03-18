@@ -1,10 +1,13 @@
-package server;
+package server.auth;
 
 import java.io.IOException;
 import java.util.function.Consumer;
 import models.User;
+import server.core.ClientHandler;
+import server.core.GameServer;
+import server.io.ClientIO;
 
-class AuthController {
+public class AuthController {
 
     private final GameServer server;
     private final Consumer<String> sendMessage;
@@ -12,7 +15,7 @@ class AuthController {
     private final Consumer<String> setUsername;
     private final Runnable showMenu;
 
-    AuthController(
+    public AuthController(
             GameServer server,
             Consumer<String> sendMessage,
             ClientIO.LineReader readLineAllowQuit,
@@ -26,7 +29,7 @@ class AuthController {
         this.showMenu = showMenu;
     }
 
-    void handleAuth(String input, ClientHandler handler) throws IOException {
+    public void handleAuth(String input, ClientHandler handler) throws IOException {
         if (input.equalsIgnoreCase("login")) {
             sendMessage.accept("Enter username:");
             String uname = readLineAllowQuit.readLine();
@@ -75,7 +78,7 @@ class AuthController {
         sendMessage.accept(prefix + " Type [login] or [register]:");
     }
 
-    boolean isAdmin(String username) {
+    public boolean isAdmin(String username) {
         User user = username == null ? null : server.getUsers().get(username);
         return user != null && user.isAdmin();
     }

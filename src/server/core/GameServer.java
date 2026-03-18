@@ -1,4 +1,4 @@
-package server;
+package server.core;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -528,7 +528,7 @@ public class GameServer {
         return false;
     }
 
-    String normalizeAnswerToken(String answer) {
+    public String normalizeAnswerToken(String answer) {
         if (answer == null) return "";
         String normalized = answer.trim().toUpperCase(Locale.ROOT);
         if (normalized.isEmpty()) return "";

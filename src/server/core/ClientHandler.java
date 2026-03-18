@@ -1,9 +1,15 @@
-package server;
+package server.core;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
 import models.*;
+import server.admin.AdminController;
+import server.auth.AuthController;
+import server.gameplay.LeaderboardController;
+import server.gameplay.MultiplayerController;
+import server.gameplay.SinglePlayerController;
+import server.io.ClientIO;
 
 public class ClientHandler implements Runnable {
 

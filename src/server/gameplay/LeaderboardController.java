@@ -1,19 +1,20 @@
-package server;
+package server.gameplay;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import models.ScoreEntry;
+import server.core.GameServer;
 
-class LeaderboardController {
+public class LeaderboardController {
 
     private final GameServer server;
     private final Supplier<String> usernameSupplier;
     private final Consumer<String> sendMessage;
     private final Runnable showMenu;
 
-    LeaderboardController(
+    public LeaderboardController(
             GameServer server,
             Supplier<String> usernameSupplier,
             Consumer<String> sendMessage,
@@ -25,7 +26,7 @@ class LeaderboardController {
         this.showMenu = showMenu;
     }
 
-    void showScoreHistory() {
+    public void showScoreHistory() {
         String username = usernameSupplier.get();
         List<ScoreEntry> all = server.getScores();
 
