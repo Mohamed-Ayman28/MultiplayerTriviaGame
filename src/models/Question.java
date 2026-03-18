@@ -9,7 +9,7 @@ public class Question {
     private String category;
     private String difficultyLevel;
     private List<String> choices;
-    private String correctAnswer; // e.g., "A", "B", "C", "D"
+    private String correctAnswer; // A,B,C,D,etc
 
     public Question() {
     }

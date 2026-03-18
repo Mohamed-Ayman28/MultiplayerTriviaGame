@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
@@ -23,8 +25,8 @@ public class LookupServer {
 
     private final int port;
     private final Gson gson;
-    private final JsonLoader jsonLoader;
     private final ExecutorService pool;
+    private final List<Question> questions;
 
     public LookupServer(int port) {
         if (port < 1 || port > 65535) {
@@ -32,8 +34,9 @@ public class LookupServer {
         }
         this.port = port;
         this.gson = new Gson();
-        this.jsonLoader = new JsonLoader();
+        //creates stateless thread pool
         this.pool = Executors.newFixedThreadPool(16);
+        this.questions = new JsonLoader().loadQuestions();
     }
 
     public void start() {
@@ -60,36 +63,67 @@ public class LookupServer {
                 return;
             }
 
+            System.out.println("[LOOKUP] Request from " + s.getInetAddress().getHostAddress() + ": " + line);
+
             String[] parts = line.split("\\|", -1);
-            if (parts.length < 4 || !"GET".equalsIgnoreCase(parts[0])) {
+            if (parts.length == 0) {
                 out.println("[]");
                 return;
             }
 
-            String category = parts[1];
-            String difficulty = parts[2];
-            int count;
-            try {
-                count = Integer.parseInt(parts[3]);
-            } catch (NumberFormatException e) {
-                out.println("[]");
+            String command = parts[0].trim().toUpperCase(Locale.ROOT);
+            System.out.println("[LOOKUP] Command=" + command);
+            if ("GET".equals(command)) {
+                if (parts.length < 4) {
+                    out.println("[]");
+                    return;
+                }
+
+                String category = parts[1];
+                String difficulty = parts[2];
+                int count;
+                try {
+                    count = Integer.parseInt(parts[3]);
+                } catch (NumberFormatException e) {
+                    out.println("[]");
+                    return;
+                }
+
+                if (count <= 0) {
+                    out.println("[]");
+                    return;
+                }
+
+                List<Question> filtered = filterQuestions(this.questions, category, difficulty);
+                Collections.shuffle(filtered);
+                int limit = Math.min(Math.max(1, count), filtered.size());
+                List<Question> result = filtered.subList(0, limit);
+                out.println(gson.toJson(result));
                 return;
             }
 
-            if (count <= 0) {
-                out.println("[]");
+            if ("CATEGORIES".equals(command)) {
+                out.println(gson.toJson(getAvailableCategories()));
                 return;
             }
 
-            List<Question> questions = jsonLoader.loadQuestions();
-            List<Question> filtered = filterQuestions(questions, category, difficulty);
-            Collections.shuffle(filtered);
-            int limit = Math.min(Math.max(1, count), filtered.size());
-            List<Question> result = filtered.subList(0, limit);
-            out.println(gson.toJson(result));
+            out.println("[]");
         } catch (IOException e) {
             System.err.println("LookupServer client error: " + e.getMessage());
         }
+    }
+
+    private List<String> getAvailableCategories() {
+        if (questions == null) {
+            return new ArrayList<>();
+        }
+
+        Set<String> categories = questions.stream()
+                .map(Question::getCategory)
+                .filter(v -> v != null && !v.trim().isEmpty())
+                .map(String::trim)
+                .collect(Collectors.toCollection(TreeSet::new));
+        return new ArrayList<>(categories);
     }
 
     private List<Question> filterQuestions(List<Question> questions, String category, String difficulty) {

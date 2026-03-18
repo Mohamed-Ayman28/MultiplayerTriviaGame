@@ -1,6 +1,6 @@
 import client.GameClient;
 import lookup.LookupServer;
-import server.GameServer;
+import server.core.GameServer;
 
 public class Main {
     public static void main(String[] args) {

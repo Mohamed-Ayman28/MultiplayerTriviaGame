@@ -1,250 +1,133 @@
 [
   {
     "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
       "isAdmin": false
     },
-    "score": 50,
-    "date": "2026-03-16T17:34:28",
-    "gametype": "Single Player",
+    "score": 90,
+    "date": "2026-03-17T18:10:58",
+    "gametype": "random-trivia",
     "totalQuestions": 10,
-    "correctAnswers": 5
+    "correctAnswers": 9
   },
   {
     "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
+      "name": "Admin",
+      "username": "admin",
+      "password": "admin123",
+      "isAdmin": true
+    },
+    "score": 90,
+    "date": "2026-03-17T18:13:02",
+    "gametype": "singleplayer",
+    "totalQuestions": 10,
+    "correctAnswers": 9
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 100,
+    "date": "2026-03-17T18:14:51",
+    "gametype": "random-trivia",
+    "totalQuestions": 10,
+    "correctAnswers": 10
+  },
+  {
+    "user": {
+      "name": "Admin",
+      "username": "admin",
+      "password": "admin123",
+      "isAdmin": true
+    },
+    "score": 100,
+    "date": "2026-03-17T19:07:04",
+    "gametype": "singleplayer",
+    "totalQuestions": 10,
+    "correctAnswers": 10
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
       "isAdmin": false
     },
     "score": 0,
-    "date": "2026-03-16T22:33:35",
+    "date": "2026-03-17T19:34:00",
     "gametype": "random-trivia",
     "totalQuestions": 10,
     "correctAnswers": 0
   },
   {
     "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 10,
-    "date": "2026-03-16T22:45:02",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 1
-  },
-  {
-    "user": {
       "name": "Mark Mounir",
       "username": "mark",
       "password": "mark123",
       "isAdmin": false
     },
-    "score": 0,
-    "date": "2026-03-16T22:45:02",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:45:34",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mark Mounir",
-      "username": "mark",
-      "password": "mark123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:45:34",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 10,
-    "date": "2026-03-16T22:46:06",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 1
-  },
-  {
-    "user": {
-      "name": "Mark Mounir",
-      "username": "mark",
-      "password": "mark123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:46:06",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:46:37",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mark Mounir",
-      "username": "mark",
-      "password": "mark123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:46:37",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 10,
-    "date": "2026-03-16T22:47:09",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 1
-  },
-  {
-    "user": {
-      "name": "Mark Mounir",
-      "username": "mark",
-      "password": "mark123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:47:09",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:47:40",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mark Mounir",
-      "username": "mark",
-      "password": "mark123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:47:40",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:48:19",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mark Mounir",
-      "username": "mark",
-      "password": "mark123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:48:19",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:48:53",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mark Mounir",
-      "username": "mark",
-      "password": "mark123",
-      "isAdmin": false
-    },
-    "score": 0,
-    "date": "2026-03-16T22:48:53",
-    "gametype": "multiplayer",
-    "totalQuestions": 1,
-    "correctAnswers": 0
-  },
-  {
-    "user": {
-      "name": "Mohamed Ayman",
-      "username": "mohamed",
-      "password": "mohamed123",
-      "isAdmin": false
-    },
-    "score": 10,
-    "date": "2026-03-16T22:49:32",
-    "gametype": "multiplayer",
+    "score": 20,
+    "date": "2026-03-17T19:39:46",
+    "gametype": "singleplayer",
     "totalQuestions": 2,
+    "correctAnswers": 2
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T19:52:54",
+    "gametype": "multiplayer",
+    "totalQuestions": 3,
     "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Mohamed Ayman",
+      "username": "mohamed",
+      "password": "mohamed123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T19:52:54",
+    "gametype": "multiplayer",
+    "totalQuestions": 3,
+    "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Ahmed Emad",
+      "username": "ahmed",
+      "password": "ahmed123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T19:52:54",
+    "gametype": "multiplayer",
+    "totalQuestions": 3,
+    "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Youssef",
+      "username": "youssef",
+      "password": "youssef123",
+      "isAdmin": false
+    },
+    "score": 0,
+    "date": "2026-03-17T19:52:54",
+    "gametype": "multiplayer",
+    "totalQuestions": 3,
+    "correctAnswers": 0
   },
   {
     "user": {
@@ -254,9 +137,74 @@
       "isAdmin": false
     },
     "score": 0,
-    "date": "2026-03-16T22:49:32",
+    "date": "2026-03-17T20:14:35",
     "gametype": "multiplayer",
-    "totalQuestions": 2,
+    "totalQuestions": 3,
+    "correctAnswers": 0
+  },
+  {
+    "user": {
+      "name": "Ahmed Emad",
+      "username": "ahmed",
+      "password": "ahmed123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T20:14:35",
+    "gametype": "multiplayer",
+    "totalQuestions": 3,
+    "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T20:21:39",
+    "gametype": "multiplayer",
+    "totalQuestions": 4,
+    "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Ahmed Emad",
+      "username": "ahmed",
+      "password": "ahmed123",
+      "isAdmin": false
+    },
+    "score": 10,
+    "date": "2026-03-17T20:21:39",
+    "gametype": "multiplayer",
+    "totalQuestions": 4,
+    "correctAnswers": 1
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 90,
+    "date": "2026-03-18T14:32:35",
+    "gametype": "singleplayer",
+    "totalQuestions": 10,
+    "correctAnswers": 9
+  },
+  {
+    "user": {
+      "name": "Mark Mounir",
+      "username": "mark",
+      "password": "mark123",
+      "isAdmin": false
+    },
+    "score": 0,
+    "date": "2026-03-18T16:27:20",
+    "gametype": "singleplayer",
+    "totalQuestions": 10,
     "correctAnswers": 0
   }
 ]

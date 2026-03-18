@@ -28,5 +28,11 @@
     "username": "youssef",
     "password": "youssef123",
     "isAdmin": false
+  },
+  {
+    "name": "tamer",
+    "username": "tamer",
+    "password": "tamer123",
+    "isAdmin": false
   }
 ]

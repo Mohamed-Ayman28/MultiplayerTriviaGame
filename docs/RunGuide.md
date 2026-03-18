@@ -1,15 +1,14 @@
 # Multiplayer Trivia Game - Run Guide
 ## Requirements
 - JDK 17 (or newer Java 17-compatible JDK)
-- Windows PowerShell (or any terminal)
+- Windows PowerShell (or any shell)
 
 ## Compile
 Run from project root:
 
-```powershell
-javac -cp "lib/gson-2.10.1.jar" -d out src/Main.java src/client/GameClient.java src/server/GameServer.java src/server/ClientHandler.java src/models/Config.java src/models/Question.java src/models/ScoreEntry.java src/models/User.java src/utils/JsonLoader.java src/lookup/LookupClient.java src/lookup/LookupServer.java
+```bash
+javac -cp "lib/gson-2.10.1.jar" -d out $(find src -name '*.java')
 ```
-
 ## Start Lookup Server
 Open terminal 1:
 ```powershell
@@ -46,5 +45,3 @@ java -cp "out;lib/gson-2.10.1.jar" Main client localhost 5000
 - mark / mark123
 - ahmed / ahmed123
 - youssef / youssef123
-
-#
