@@ -154,15 +154,15 @@ public class MultiplayerController {
     }
 
     private void listRooms() {
-        Map<String, List<String>> rooms = server.getGameRooms();
+        Map<String, GameServer.GameRoom> rooms = server.getGameRooms();
         if (rooms.isEmpty()) {
             sendMessage.accept("No rooms available.");
             return;
         }
         sendMessage.accept("--- Available Rooms ---");
-        for (Map.Entry<String, List<String>> e : rooms.entrySet()) {
+        for (Map.Entry<String, GameServer.GameRoom> e : rooms.entrySet()) {
             String status = server.isRoomInProgress(e.getKey()) ? "[IN PROGRESS]" : "[WAITING]";
-            sendMessage.accept(e.getKey() + " | Players: " + e.getValue().size()
+            sendMessage.accept(e.getKey() + " | Players: " + e.getValue().players.size()
                     + " | Host: " + server.getRoomHost(e.getKey()) + " " + status);
         }
     }
@@ -197,14 +197,14 @@ public class MultiplayerController {
             }
             switch (input.trim()) {
                 case "1":
-                    List<String> players = server.getGameRooms().get(currentRoom);
+                    GameServer.GameRoom room = server.getGameRooms().get(currentRoom);
                     int minPlayers = server.getConfig() != null ? server.getConfig().getMinPlayers() : 2;
-                    if (players == null || players.size() < minPlayers) {
+                    if (room == null || room.players.size() < minPlayers) {
                         sendMessage.accept("Need at least " + minPlayers + " players to start.");
                         handleRoomLobby();
                     } else {
-                        String room = currentRoom;
-                        new Thread(() -> server.startMultiplayerGame(room)).start();
+                        String roomToStart = currentRoom;
+                        new Thread(() -> server.startMultiplayerGame(roomToStart)).start();
                         if (waitForGameToStart(5000)) {
                             waitForGameEnd();
                         } else {
@@ -322,13 +322,13 @@ public class MultiplayerController {
 
     private void showCurrentRoomPlayers() {
         String currentRoom = currentRoomSupplier.get();
-        List<String> players = server.getGameRooms().get(currentRoom);
-        if (players == null || players.isEmpty()) {
+        GameServer.GameRoom room = server.getGameRooms().get(currentRoom);
+        if (room == null || room.players.isEmpty()) {
             sendMessage.accept("Room is empty.");
             return;
         }
         sendMessage.accept("Players in room " + currentRoom + ":");
-        for (String p : players) {
+        for (String p : room.players) {
             sendMessage.accept("- " + p);
         }
     }

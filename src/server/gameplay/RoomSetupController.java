@@ -41,8 +41,8 @@ class RoomSetupController {
 
     Outcome configureRoomGame() throws IOException {
         String currentRoom = currentRoomSupplier.get();
-        List<String> players = server.getGameRooms().get(currentRoom);
-        if (players == null || players.isEmpty()) {
+        GameServer.GameRoom room = server.getGameRooms().get(currentRoom);
+        if (room == null || room.players.isEmpty()) {
             sendMessage.accept("Room not found.");
             showMenu.run();
             return Outcome.RETURN_TO_MENU;
@@ -82,7 +82,7 @@ class RoomSetupController {
         Map<String, String> teamByUser = null;
 
         if (enableTeams) {
-            if (players.size() < 2) {
+            if (room.players.size() < 2) {
                 sendMessage.accept("At least 2 players required for teams.");
                 return Outcome.RETURN_TO_LOBBY;
             }
@@ -103,7 +103,7 @@ class RoomSetupController {
 
             teamByUser = new HashMap<>();
             sendMessage.accept("Assign players to teams. Type A or B for each player:");
-            for (String p : players) {
+            for (String p : room.players) {
                 while (true) {
                     sendMessage.accept("Player " + p + " -> team (A/B):");
                     String t = readLineAllowQuit.readLine();

@@ -35,15 +35,30 @@ public class GameServer {
     private Config config;
 
     private Map<String, ClientHandler> connectedClients;
-    private Map<String, List<String>>  gameRooms;
-    private Map<String, String> roomHosts;
-    private Map<String, Boolean> roomInProgress;
-    private Map<String, Map<String, Integer>> roomScores;
-    private Map<String, Map<String, String>>  roomAnswers;
-    private Map<String, Boolean> roomAcceptingAnswers;
-    private Map<String, RoomSetup> roomSetups;
-    private Map<String, Map<String, List<String>>> roomAnswerDetails;
+    private Map<String, GameRoom> gameRooms;
     private AtomicInteger publicRoomCounter;
+
+    public static class GameRoom {
+        public List<String> players;
+        public String host;
+        public boolean inProgress;
+        public Map<String, Integer> scores;
+        public Map<String, String> answers;
+        public boolean acceptingAnswers;
+        public RoomSetup setup;
+        public Map<String, List<String>> answerDetails;
+
+        public GameRoom() {
+            this.players = new CopyOnWriteArrayList<>();
+            this.host = null;
+            this.inProgress = false;
+            this.scores = new ConcurrentHashMap<>();
+            this.answers = new ConcurrentHashMap<>();
+            this.acceptingAnswers = false;
+            this.setup = null;
+            this.answerDetails = new ConcurrentHashMap<>();
+        }
+    }
 
     private static class RoomSetup {
         private String category;
@@ -71,14 +86,7 @@ public class GameServer {
     public GameServer() {
         jsonLoader = new JsonLoader();
         connectedClients = new ConcurrentHashMap<>();
-        gameRooms= new ConcurrentHashMap<>();
-        roomHosts  = new ConcurrentHashMap<>();
-        roomInProgress = new ConcurrentHashMap<>();
-        roomScores   = new ConcurrentHashMap<>();
-        roomAnswers = new ConcurrentHashMap<>();
-        roomAcceptingAnswers = new ConcurrentHashMap<>();
-        roomSetups = new ConcurrentHashMap<>();
-        roomAnswerDetails = new ConcurrentHashMap<>();
+        gameRooms = new ConcurrentHashMap<>();
         publicRoomCounter = new AtomicInteger(1);
         loadData();
         String lookupHost = config != null ? config.getLookupHost() : "localhost";
@@ -140,7 +148,7 @@ public class GameServer {
     public void removeClient(String username) {
         connectedClients.remove(username);
         List<String> rooms = gameRooms.entrySet().stream()
-                .filter(e -> e.getValue().contains(username))
+                .filter(e -> e.getValue().players.contains(username))
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
         for (String roomName : rooms) {
@@ -154,26 +162,26 @@ public class GameServer {
    
     public boolean createRoom(String roomName, String hostUsername) {
         if (gameRooms.containsKey(roomName)) return false;
-        List<String> players = new CopyOnWriteArrayList<>();
-        players.add(hostUsername);
-        gameRooms.put(roomName, players);
-        roomHosts.put(roomName, hostUsername);
-        roomInProgress.put(roomName, false);
+        GameRoom room = new GameRoom();
+        room.players.add(hostUsername);
+        room.host = hostUsername;
+        room.inProgress = false;
         int defaultCount = config != null ? config.getDefaultQuestionCount() : 5;
-        roomSetups.put(roomName, new RoomSetup("any", "any", defaultCount, null, null, null));
+        room.setup = new RoomSetup("any", "any", defaultCount, null, null, null);
+        gameRooms.put(roomName, room);
         System.out.println("Room created: '" + roomName + "' by " + hostUsername);
         return true;
     }
 
     public String joinOrCreatePublicRoom(String username) {
-        for (Map.Entry<String, List<String>> entry : gameRooms.entrySet()) {
+        for (Map.Entry<String, GameRoom> entry : gameRooms.entrySet()) {
             String roomName = entry.getKey();
-            List<String> players = entry.getValue();
+            GameRoom room = entry.getValue();
             if (!roomName.startsWith(PUBLIC_ROOM_PREFIX)) continue;
-            if (roomInProgress.getOrDefault(roomName, false)) continue;
-            if (players.contains(username)) return roomName;
-            if (config != null && players.size() >= config.getMaxPlayers()) continue;
-            players.add(username);
+            if (room.inProgress) continue;
+            if (room.players.contains(username)) return roomName;
+            if (config != null && room.players.size() >= config.getMaxPlayers()) continue;
+            room.players.add(username);
             return roomName;
         }
 
@@ -188,69 +196,95 @@ public class GameServer {
 
     public synchronized boolean tryAutoStartPublicRoom(String roomName) {
         if (!isPublicRoom(roomName)) return false;
-        if (isRoomInProgress(roomName)) return false;
+        GameRoom room = gameRooms.get(roomName);
+        if (room == null || room.inProgress) return false;
 
-        List<String> players = gameRooms.get(roomName);
-        if (players == null) return false;
         int minPlayers = config != null ? config.getMinPlayers() : 2;
-        if (players.size() < minPlayers) return false;
+        if (room.players.size() < minPlayers) return false;
 
-        roomSetups.put(roomName, new RoomSetup("any", "any",
+        room.setup = new RoomSetup("any", "any",
                 config != null ? config.getDefaultQuestionCount() : 5,
-                null, null, null));
+                null, null, null);
 
         new Thread(() -> startMultiplayerGame(roomName)).start();
         return true;
     }
 
     public boolean joinRoom(String roomName, String username) {
-        List<String> players = gameRooms.get(roomName);
-        if (players == null) return false;
-        if (roomInProgress.getOrDefault(roomName, false)) return false;
-        if (config != null && players.size() >= config.getMaxPlayers()) return false;
-        if (players.contains(username)) return false;
-        players.add(username);
+        GameRoom room = gameRooms.get(roomName);
+        if (room == null) return false;
+        if (room.inProgress) return false;
+        if (config != null && room.players.size() >= config.getMaxPlayers()) return false;
+        if (room.players.contains(username)) return false;
+        room.players.add(username);
         return true;
     }
 
     public boolean leaveRoom(String roomName, String username) {
-        List<String> players = gameRooms.get(roomName);
-        if (players == null) return false;
-        players.remove(username);
-        if (players.isEmpty()) {
-            gameRooms.remove(roomName);
-            roomHosts.remove(roomName);
-            roomInProgress.remove(roomName);
-            roomSetups.remove(roomName);
-            roomAcceptingAnswers.remove(roomName);
-            roomAnswers.remove(roomName);
-            roomScores.remove(roomName);
-            roomAnswerDetails.remove(roomName);
-        } else if (username.equals(roomHosts.get(roomName))) {
-            roomHosts.put(roomName, players.get(0));
-            broadcastToRoom(roomName, "Host left. New host: " + players.get(0));
+        GameRoom room = gameRooms.get(roomName);
+        if (room == null) return false;
+        room.players.remove(username);
+        if (room.players.isEmpty()) {
+            deleteRoom(roomName);
+        } else if (username.equals(room.host)) {
+            room.host = room.players.get(0);
+            broadcastToRoom(roomName, "Host left. New host: " + room.players.get(0));
         }
         return true;
     }
 
-    public Map<String, List<String>> getGameRooms() { return gameRooms; }
-    public String  getRoomHost(String roomName) { return roomHosts.get(roomName); }
-    public boolean isRoomInProgress(String roomName)  { return roomInProgress.getOrDefault(roomName, false); }
-    public void    setRoomInProgress(String roomName, boolean v) { roomInProgress.put(roomName, v); }
+    private void deleteRoom(String roomName) {
+        gameRooms.remove(roomName);
+    }
+
+    private void broadcastQuestion(String roomName, Question q, int questionIndex, int totalQuestions, int timeSeconds) {
+        broadcastToRoom(roomName, "--- Question " + questionIndex + "/" + totalQuestions
+                + " [" + q.getDifficultyLevel() + "] ---");
+        broadcastToRoom(roomName, q.getText());
+        for (String choice : q.getChoices()) broadcastToRoom(roomName, choice);
+        broadcastToRoom(roomName, "You have " + timeSeconds + " seconds. Enter A/B/C/D:");
+    }
+
+    private boolean isAnswerCorrect(String userAnswer, String normalizedCorrectAnswer) {
+        String normalizedUser = normalizeAnswerToken(userAnswer);
+        return !normalizedUser.isEmpty() && normalizedUser.equalsIgnoreCase(normalizedCorrectAnswer);
+    }
+
+    private void updatePlayerScore(GameRoom room, RoomSetup setup, String player, int points, Map<String, Integer> teamScores) {
+        room.scores.merge(player, points, Integer::sum);
+        if (setup.isTeamMode()) {
+            String team = setup.teamByUser.get(player);
+            if (team != null) teamScores.merge(team, points, Integer::sum);
+        }
+    }
+
+    public Map<String, GameRoom> getGameRooms() { return gameRooms; }
+    public String  getRoomHost(String roomName) { 
+        GameRoom room = gameRooms.get(roomName);
+        return room != null ? room.host : null;
+    }
+    public boolean isRoomInProgress(String roomName) { 
+        GameRoom room = gameRooms.get(roomName);
+        return room != null && room.inProgress;
+    }
+    public void    setRoomInProgress(String roomName, boolean v) { 
+        GameRoom room = gameRooms.get(roomName);
+        if (room != null) room.inProgress = v;
+    }
 
     public void broadcastToRoom(String roomName, String message) {
-        List<String> players = gameRooms.get(roomName);
-        if (players == null) return;
-        for (String p : players) {
+        GameRoom room = gameRooms.get(roomName);
+        if (room == null) return;
+        for (String p : room.players) {
             ClientHandler h = connectedClients.get(p);
             if (h != null) h.sendMessage(message);
         }
     }
 
     public void broadcastToRoomExcept(String roomName, String message, String except) {
-        List<String> players = gameRooms.get(roomName);
-        if (players == null) return;
-        for (String p : players) {
+        GameRoom room = gameRooms.get(roomName);
+        if (room == null) return;
+        for (String p : room.players) {
             if (!p.equals(except)) {
                 ClientHandler h = connectedClients.get(p);
                 if (h != null) h.sendMessage(message);
@@ -260,8 +294,8 @@ public class GameServer {
 
     public boolean configureRoomGame(String roomName, String category, String difficulty, int questionCount,
                                      String teamAName, String teamBName, Map<String, String> teamByUser) {
-        List<String> players = gameRooms.get(roomName);
-        if (players == null || players.isEmpty()) return false;
+        GameRoom room = gameRooms.get(roomName);
+        if (room == null || room.players.isEmpty()) return false;
         if (isPublicRoom(roomName)) return false;
 
         String selectedCategory = (category == null || category.trim().isEmpty()) ? "any" : category.trim();
@@ -271,15 +305,15 @@ public class GameServer {
         if (teamByUser != null && !teamByUser.isEmpty()) {
             if (teamAName == null || teamBName == null) return false;
             if (teamAName.trim().equalsIgnoreCase(teamBName.trim())) return false;
-            if (players.size() < 2 || players.size() % 2 != 0) return false;
+            if (room.players.size() < 2 || room.players.size() % 2 != 0) return false;
 
             int maxPerTeam = config != null
                     ? Math.max(1, config.getMaxPlayers() / 2)
-                    : Math.max(1, players.size() / 2);
+                    : Math.max(1, room.players.size() / 2);
 
             int aSize = 0;
             int bSize = 0;
-            for (String p : players) {
+            for (String p : room.players) {
                 String t = teamByUser.get(p);
                 if (t == null) return false;
                 if (t.equalsIgnoreCase(teamAName.trim())) aSize++;
@@ -290,10 +324,10 @@ public class GameServer {
             if (aSize > maxPerTeam || bSize > maxPerTeam) return false;
         }
 
-        roomSetups.put(roomName, new RoomSetup(selectedCategory, selectedDifficulty, safeCount,
+        room.setup = new RoomSetup(selectedCategory, selectedDifficulty, safeCount,
                 teamAName != null ? teamAName.trim() : null,
                 teamBName != null ? teamBName.trim() : null,
-                teamByUser));
+                teamByUser);
         return true;
     }
 
@@ -305,27 +339,26 @@ public class GameServer {
     }
 
     public void startMultiplayerGame(String roomName) {
-        List<String> roomPlayers = gameRooms.get(roomName);
-        if (roomPlayers == null || roomPlayers.isEmpty()) return;
+        GameRoom room = gameRooms.get(roomName);
+        if (room == null || room.players.isEmpty()) return;
 
         synchronized (this) {
-            if (roomInProgress.getOrDefault(roomName, false)) return;
-            roomInProgress.put(roomName, true);
+            if (room.inProgress) return;
+            room.inProgress = true;
         }
 
-        List<String> players = new ArrayList<>(roomPlayers);
+        List<String> players = new ArrayList<>(room.players);
 
-        RoomSetup setup = roomSetups.getOrDefault(roomName,
-                new RoomSetup("any", "any", config != null ? config.getDefaultQuestionCount() : 5,
-                        null, null, null));
+        RoomSetup setup = room.setup;
+        if (setup == null) {
+            setup = new RoomSetup("any", "any", config != null ? config.getDefaultQuestionCount() : 5,
+                    null, null, null);
+            room.setup = setup;
+        }
 
-        Map<String, Integer> scores = new ConcurrentHashMap<>();
-        for (String p : players) scores.put(p, 0);
-        roomScores.put(roomName, scores);
+        for (String p : players) room.scores.put(p, 0);
 
-        Map<String, List<String>> answerDetails = new ConcurrentHashMap<>();
-        for (String p : players) answerDetails.put(p, new CopyOnWriteArrayList<>());
-        roomAnswerDetails.put(roomName, answerDetails);
+        for (String p : players) room.answerDetails.put(p, new CopyOnWriteArrayList<>());
 
         int qCount = setup.questionCount;
         int qTime  = config != null ? config.getQuestionTime()         : 15;
@@ -334,12 +367,12 @@ public class GameServer {
         List<Question> gameQuestions = fetchQuestionsForGame(setup.category, setup.difficulty, qCount);
         if (gameQuestions.isEmpty()) {
             broadcastToRoom(roomName, "No questions available for selected criteria.");
-            roomAcceptingAnswers.remove(roomName);
-            roomAnswers.remove(roomName);
-            roomScores.remove(roomName);
-            roomAnswerDetails.remove(roomName);
+            room.acceptingAnswers = false;
+            room.answers.clear();
+            room.scores.clear();
+            room.answerDetails.clear();
             broadcastToRoom(roomName, "Returning to lobby...");
-            setRoomInProgress(roomName, false);
+            room.inProgress = false;
             return;
         }
 
@@ -359,14 +392,10 @@ public class GameServer {
                 String normalizedCorrect = normalizeAnswerToken(q.getCorrectAnswer());
 
                 Map<String, String> answers = new ConcurrentHashMap<>();
-                roomAnswers.put(roomName, answers);
-                roomAcceptingAnswers.put(roomName, true);
+                room.answers = answers;
+                room.acceptingAnswers = true;
 
-                broadcastToRoom(roomName, "--- Question " + (i + 1) + "/" + gameQuestions.size()
-                        + " [" + q.getDifficultyLevel() + "] ---");
-                broadcastToRoom(roomName, q.getText());
-                for (String choice : q.getChoices()) broadcastToRoom(roomName, choice);
-                broadcastToRoom(roomName, "You have " + qTime + " seconds. Enter A/B/C/D:");
+                broadcastQuestion(roomName, q, (i + 1), gameQuestions.size(), qTime);
 
                 boolean closedByCorrectAnswer = waitForQuestionWindow(
                         roomName,
@@ -376,7 +405,7 @@ public class GameServer {
                         warnings,
                         normalizedCorrect
                 );
-                roomAcceptingAnswers.put(roomName, false);
+                room.acceptingAnswers = false;
                 if (closedByCorrectAnswer) {
                     broadcastToRoom(roomName, "A correct answer was received. Closing this question now.");
                 }
@@ -390,25 +419,21 @@ public class GameServer {
                 broadcastToRoom(roomName, "--- Time's up! Correct answer: " + normalizedCorrect + " ---");
                 for (String p : players) {
                     String ans = normalizeAnswerToken(answers.getOrDefault(p, ""));
-                    boolean correct = !ans.isEmpty() && ans.equalsIgnoreCase(normalizedCorrect);
+                    boolean correct = isAnswerCorrect(ans, normalizedCorrect);
                     if (correct) {
-                        scores.merge(p, 10, Integer::sum);
-                        if (setup.isTeamMode()) {
-                            String team = setup.teamByUser.get(p);
-                            if (team != null) teamScores.merge(team, 10, Integer::sum);
-                        }
+                        updatePlayerScore(room, setup, p, 10, teamScores);
                         broadcastToRoom(roomName, p + ": CORRECT (+10)");
-                        answerDetails.get(p).add("Q" + (i + 1) + ": correct (" + ans + ")");
+                        room.answerDetails.get(p).add("Q" + (i + 1) + ": correct (" + ans + ")");
                     } else {
                         String display = ans.isEmpty() ? "no answer" : ans;
                         broadcastToRoom(roomName, p + ": WRONG (" + display + ")");
-                        answerDetails.get(p).add("Q" + (i + 1) + ": wrong (" + display + "), correct=" + normalizedCorrect);
+                        room.answerDetails.get(p).add("Q" + (i + 1) + ": wrong (" + display + "), correct=" + normalizedCorrect);
                     }
                 }
 
                 
                 broadcastToRoom(roomName, "-- Scores --");
-                scores.entrySet().stream()
+                room.scores.entrySet().stream()
                     .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                     .forEach(e -> broadcastToRoom(roomName, e.getKey() + ": " + e.getValue()));
                 if (setup.isTeamMode()) {
@@ -424,8 +449,8 @@ public class GameServer {
 
        
             broadcastToRoom(roomName, "=== GAME OVER ===");
-            int topScore = scores.values().stream().mapToInt(Integer::intValue).max().orElse(0);
-            List<String> topPlayers = scores.entrySet().stream()
+            int topScore = room.scores.values().stream().mapToInt(Integer::intValue).max().orElse(0);
+            List<String> topPlayers = room.scores.entrySet().stream()
                     .filter(e -> e.getValue() == topScore)
                     .map(Map.Entry::getKey)
                     .sorted()
@@ -448,8 +473,8 @@ public class GameServer {
             }
             broadcastToRoom(roomName, "=== PLAYER DETAILS ===");
             for (String p : players) {
-                broadcastToRoom(roomName, p + " -> " + scores.getOrDefault(p, 0) + " pts");
-                List<String> details = answerDetails.getOrDefault(p, Collections.emptyList());
+                broadcastToRoom(roomName, p + " -> " + room.scores.getOrDefault(p, 0) + " pts");
+                List<String> details = room.answerDetails.getOrDefault(p, Collections.emptyList());
                 for (String d : details) broadcastToRoom(roomName, "  " + d);
             }
 
@@ -458,26 +483,23 @@ public class GameServer {
             for (String p : players) {
                 User u = users.get(p);
                 if (u != null) {
-                    int s = scores.getOrDefault(p, 0);
+                    int s = room.scores.getOrDefault(p, 0);
                     this.scores.add(new ScoreEntry(u, s, now, "multiplayer",
                             gameQuestions.size(), s / 10));
                 }
             }
             jsonLoader.saveScores(this.scores);
         } finally {
-            setRoomInProgress(roomName, false);
-            roomAcceptingAnswers.remove(roomName);
-            roomAnswers.remove(roomName);
-            roomScores.remove(roomName);
-            roomAnswerDetails.remove(roomName);
+            room.inProgress = false;
+            room.acceptingAnswers = false;
+            room.answers.clear();
+            room.scores.clear();
+            room.answerDetails.clear();
 
             broadcastToRoom(roomName, "Returning to lobby...");
 
             if (isPublicRoom(roomName)) {
-                gameRooms.remove(roomName);
-                roomHosts.remove(roomName);
-                roomInProgress.remove(roomName);
-                roomSetups.remove(roomName);
+                deleteRoom(roomName);
             }
         }
     }
@@ -544,19 +566,16 @@ public class GameServer {
 
    
     public SubmitResult submitAnswer(String roomName, String username, String answer) {
-        if (!isRoomInProgress(roomName)) return SubmitResult.NO_ACTIVE_GAME;
-        if (!roomAcceptingAnswers.getOrDefault(roomName, false)) return SubmitResult.QUESTION_CLOSED;
+        GameRoom room = gameRooms.get(roomName);
+        if (room == null || !room.inProgress) return SubmitResult.NO_ACTIVE_GAME;
+        if (!room.acceptingAnswers) return SubmitResult.QUESTION_CLOSED;
         if (answer == null) return SubmitResult.INVALID_ANSWER;
-        List<String> players = gameRooms.get(roomName);
-        if (players == null || !players.contains(username)) return SubmitResult.NO_ACTIVE_GAME;
+        if (!room.players.contains(username)) return SubmitResult.NO_ACTIVE_GAME;
 
         String normalized = normalizeAnswerToken(answer);
         if (!normalized.matches("[A-D]")) return SubmitResult.INVALID_ANSWER;
 
-        Map<String, String> answers = roomAnswers.get(roomName);
-        if (answers == null) return SubmitResult.QUESTION_CLOSED;
-
-        String previous = answers.putIfAbsent(username, normalized);
+        String previous = room.answers.putIfAbsent(username, normalized);
         if (previous != null) return SubmitResult.DUPLICATE_ANSWER;
         return SubmitResult.ACCEPTED;
     }
